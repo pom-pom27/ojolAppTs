@@ -1,43 +1,60 @@
 import React from 'react';
-import { View, Text, StyleSheet } from 'react-native';
-import ActionButton from '../components/Molecules/ActionButton';
-import { colors } from '../assets/colors';
+import { View, Text, StyleSheet, Image } from 'react-native';
+import AuthButton from '../components/Molecules/AuthButton';
+import { StackNavigationProp } from '@react-navigation/stack';
+import { AuthParamList } from 'routes/AuthParamList';
+import { strings } from 'assets/strings';
+import { useTheme } from 'react-native-paper';
 
-const WelcomeAuthScreen = () => {
+type WelcomeAuthScreenProps = {
+  navigation: StackNavigationProp<AuthParamList, 'WelcomeAuth'>;
+};
+
+const WelcomeAuthScreen = ({ navigation }: WelcomeAuthScreenProps) => {
+  const { colors } = useTheme();
+
+  const styles = StyleSheet.create({
+    illustration: {
+      width: 300,
+      height: 200,
+    },
+    container: {
+      flex: 1,
+      justifyContent: 'center',
+      alignItems: 'center',
+      backgroundColor: 'white',
+    },
+    welcomeText: {
+      fontWeight: 'bold',
+      color: colors.text,
+      fontSize: 20,
+      marginTop: 10,
+      marginBottom: 80,
+    },
+  });
   return (
     <View style={styles.container}>
-      <View style={styles.illustration} />
+      <View style={styles.illustration}>
+        <Image
+          style={styles.illustration}
+          resizeMode="cover"
+          source={require('../assets/images/motor.jpg')}
+        />
+      </View>
       <Text style={styles.welcomeText}>Selamat Datang di O-JOL</Text>
-      <ActionButton
-        title={'Masuk'}
-        desc={'Silahkan Masuk, Jika anda memilik akun'}
+      <AuthButton
+        title={strings.Auth.loginButtonText}
+        desc={strings.Auth.descriptionLogin}
+        onPress={() => navigation.navigate('Login')}
       />
-      <ActionButton
-        title={'Registrasi'}
-        desc={'atau, Silahkan daftar jika belum mempunyai account'}
+
+      <AuthButton
+        title={strings.Auth.registerButtonText}
+        desc={strings.Auth.descriptionRegister}
+        onPress={() => navigation.navigate('Register')}
       />
     </View>
   );
 };
-
-const styles = StyleSheet.create({
-  illustration: {
-    width: 200,
-    backgroundColor: colors.default,
-    height: 100,
-  },
-  container: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-  welcomeText: {
-    fontWeight: 'bold',
-    color: 'purple',
-    fontSize: 20,
-    marginTop: 10,
-    marginBottom: 80,
-  },
-});
 
 export default WelcomeAuthScreen;
